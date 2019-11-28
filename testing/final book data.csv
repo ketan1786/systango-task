@@ -1,0 +1,4 @@
+"['Product Name', 'Cost Price', 'Sale Tax %', 'Final Price', 'Country']"
+Book1,500,18,590.0,India
+book2,15,18,17.7,USA
+book3,50,18,59.0,UK
