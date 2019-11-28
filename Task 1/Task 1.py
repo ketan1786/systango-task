@@ -1,38 +1,38 @@
 import csv
 
-sale_tax = 18
 
-column = {}
+class Logistic:
+    input_file = 'book_data.csv'
+    output_file = 'final book data.csv'
+    sale_tax = 18
+    output_data = []
 
-column_head = []
+    def calculation(self, name, cost, country):  # calculate the final cost for each country according to their sale tax
+        final_price = cost + cost * (self.sale_tax / 100)
+        return [name, cost, self.sale_tax, final_price, country]  # returns the remaining values
 
-with open('product_data.csv') as product_info:
-    csv_viewer = csv.reader(product_info, delimiter=',')
-    line_count = 0
-    for row in csv_viewer:
-        if line_count == 0:
-            for head in row:
-                column_head.append(head)  # adds the heading
-            else:
-                line_count = + 1
-        else:
-            column[row[0]] = {
-                column_head[0]: row[0],
-                column_head[1]: row[1],
-                'sale-tax': sale_tax,
-                'final-price': int(row[1]) + int(row[1]) * (sale_tax / 100),
-                column_head[2]: row[2],
+    def read_info(self):
+        with open(self.input_file) as input_data:
+            data_read = csv.reader(input_data, delimiter=",")
+            next(data_read)
+            for line in data_read:
+                self.output_data.append(
+                    self.calculation(line[0], int(line[1]), line[2]))  # appends the data in the list
 
-            }
-product_info.close()
+        return self.output_data
 
-output_list = [['Product Name', 'Cost Price', 'Sale Tax %', 'Final Price', 'Country']]
+    def write_info(self):
+        default_output_heading = [['Product Name', 'Cost Price', 'Sale Tax %', 'Final Price', 'Country']]
+        with open(self.output_file, "w") as output_data:
+            insert = csv.writer(output_data)
+            info = self.read_info()
+            info.insert(0, default_output_heading)  # inserts the heading line
+            insert.writerows(info)  # insert the output data
 
-for l in column:
-    output_list.append(list(column[l].values()))
 
-with open('output1.csv', 'w') as write_info:
-    data_writer = csv.writer(write_info)
-    data_writer.writerows(output_list)
-
-write_info.close()
+# def main():
+#     c = Logistic()
+#     c.read_info()
+#     c.write_info()
+if __name__ == "__main__":
+    Logistic().write_info()
